@@ -22,8 +22,8 @@ Ensure you have the following installed on your local machine:
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/Bouih32/notesManager.git
-cd notesManager
+git clone https://github.com/Bouih32/mycoursesBackend.git
+cd mycoursesBackend
 ```
 
 ### Install Dependencies
