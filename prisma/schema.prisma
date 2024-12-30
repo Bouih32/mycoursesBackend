@@ -73,10 +73,8 @@ model Review {
   rating    Int
   comment   String?
   createdAt DateTime @default(now())
-
-  user   User   @relation(fields: [userId], references: [userId])
-  userId String
-
-  course   Course @relation(fields: [courseId], references: [courseId])
-  courseId String
+  user      User     @relation(fields: [userId], references: [userId])
+  userId    String
+  course    Course   @relation(fields: [courseId], references: [courseId])
+  courseId  String
 }
