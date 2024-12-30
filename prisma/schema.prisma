@@ -1,0 +1,82 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  userId     String       @id @default(uuid())
+  userName   String
+  firstName  String
+  lastName   String
+  email      String       @unique
+  password   String
+  role       String
+  avatar     String
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  review     Review[]
+  enrollment Enrollment[]
+}
+
+model Course {
+  courseId     String       @id @default(uuid())
+  title        String
+  description  String
+  instructorId String
+  category     String
+  price        Int
+  image        String
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  section      Section[]
+  review       Review[]
+  enrollment   Enrollment[]
+}
+
+model Section {
+  sectionId String   @id @default(uuid())
+  courseId  String
+  course    Course   @relation(fields: [courseId], references: [courseId])
+  title     String
+  lesson    Lesson[]
+}
+
+model Lesson {
+  id        String  @id @default(uuid())
+  title     String
+  content   String
+  videoUrl  String?
+  sectionId String
+  section   Section @relation(fields: [sectionId], references: [sectionId])
+}
+
+model Enrollment {
+  id         String   @id @default(uuid())
+  status     String
+  progress   Int?
+  enrolledAt DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [userId])
+  userId     String
+  course     Course   @relation(fields: [courseId], references: [courseId])
+  courseId   String
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  rating    Int
+  comment   String?
+  createdAt DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [userId])
+  userId String
+
+  course   Course @relation(fields: [courseId], references: [courseId])
+  courseId String
+}
