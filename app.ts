@@ -1,10 +1,23 @@
 import express, { Request, Response } from "express";
 import dotenv from "dotenv";
 import prisma from "./utils/prisma";
+import cors from "cors";
+import helmet from "helmet";
+import { rateLimit } from "express-rate-limit";
 const app = express();
 dotenv.config();
 const port = process.env.PORT || 7856;
 
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  limit: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes).
+  standardHeaders: "draft-8",
+});
+
+app.use(helmet());
+app.disable("x-powered-by");
+app.use(cors());
+app.use(limiter);
 app.use(express.json());
 app.post("/", async (req: Request, res: Response) => {
   try {
